@@ -1,0 +1,80 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Control panel";
+}
+
+<!-- for some reason CSS inside _Layout doesnt apply here-->
+<style>
+    thead, th, td {
+        border: 1px solid black;
+        padding: 2px;
+    }
+    #portableTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    #button_toggleEngineOn {
+        background-color: #67CE67;
+        border-color: #67CE67;
+    }
+    #button_toggleEngineOff {
+        background-color: #DC8787;
+        border-color: #DC8787;
+    }
+</style>
+
+<div>
+    <h3 id="pageTitle">Readings</h3>
+    <form method="post" style="display:inline" asp-page-handler="reqdisable">
+        <button id="button_toggleEngineOff" type="submit">
+            Toggle engine OFF
+        </button>
+    </form>
+    <form method="post" style="display:inline" asp-page-handler="reqenable">
+        <button id="button_toggleEngineOn" type="submit">
+            Toggle engine ON
+        </button>
+    </form>
+    <form method="post" style="display:inline;float:right;" asp-page-handler="save">
+        <label>MCC server address: </label>
+        <input id="ip" placeholder="localhost" name="mccIp"> 
+        <label> port: </label>
+        <input id="port" placeholder="29500" type="number" min="0" max="65535" name="mccPort">
+        <input type="submit" value="Save"/>
+    </form>
+    <br />
+    <br />
+    <table id="portableTable">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Temperature</th>
+                <th>Vibrations</th>
+                <th>RPM</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.MccData)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@Math.Round(item.tmp, 3)</td>
+                    <td>@Math.Round(item.vbr, 3)</td>
+                    <td>@Math.Round(item.rpm, 3)</td>
+                    <td>@item.recordingTime</td>
+                </tr>
+            }
+        </tbody>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Temperature</th>
+                <th>Vibrations</th>
+                <th>RPM</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+    </table>
+</div>
